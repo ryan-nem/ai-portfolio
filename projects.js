@@ -41,7 +41,11 @@ window.PROJECTS=[
 {t:"Chef Nem",c:"Personal",tools:[],pitch:"A meal planner for the family.",wip:1,plain:"An AI helper that plans our family meals."},
 {t:"DressHim",c:"Personal",tools:[],pitch:"A stylist assistant for work outfits.",wip:1,plain:"An AI stylist that helps pick work outfits."},
 {t:"Fitness App",c:"Personal",tools:[],pitch:"A personal fitness app.",wip:1,plain:"An app that helps with workouts."},
-{t:"NFL Betting Simulator",c:"Personal",tools:[],pitch:"A simulator for testing NFL betting strategies.",wip:1,plain:"A game-like simulator for trying out football picks without real money."},
+{t:"Mockingjay",c:"Personal",s:3,m:10.1,tools:["Claude","Google Apps Script","GitHub Pages"],
+ pitch:"An NFL betting challenge for a friends' league, as a Home Screen app for iPhone and Android.",
+ problem:"Running a league betting challenge by hand meant tracking picks, wager limits, kickoff deadlines and results for every player.",
+ built:"A web app that installs on the phone's Home Screen, hosted on GitHub Pages. All data and rules (player identity, wager caps, kickoff locks, bankroll limits, grading) live in a Google Apps Script backend that checks each player's private link on every request, so the public app files hold no secrets.",
+ plain:"A phone app for our football league's friendly betting game. It tracks everyone's picks and pretend bankroll, locks bets at kickoff, and scores the results automatically."},
 {t:"Nemethy Super Bowl App",c:"Future",tools:[],pitch:"A family Super Bowl app, planned next.",wip:1,plain:"Something fun for our family's Super Bowl, coming next."}
 ];
 window.STAGES=[
