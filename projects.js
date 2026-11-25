@@ -66,9 +66,10 @@ window.PROJECTS=[
  built:"Started in March 2026 as an elaborate Google Sheet and launched in September as a fully deployed Home Screen app, backed by Apps Script, that tracks workouts for two people. It prioritizes the key workouts so I stay on track while protecting time with my family.",
  impact:"Keeps two people consistently on track with their fitness goals without taking time away from family."},
 {t:"Mockingjay",c:"Personal",s:2,m:7.4,tools:["Claude","Google Apps Script","GitHub Pages"],
- pitch:"An NFL betting challenge for a friends' league, as a Home Screen app for iPhone and Android.",
- problem:"Running a league betting challenge by hand meant tracking picks, wager limits, kickoff deadlines and results for every player.",
- built:"A web app that installs on the phone's Home Screen, hosted on GitHub Pages. All data and rules (player identity, wager caps, kickoff locks, bankroll limits, grading) live in a Google Apps Script backend that checks each player's private link on every request, so the public app files hold no secrets.",
+ pitch:"An NFL betting challenge for friends: an alternative to fantasy football, with no real money at stake.",
+ problem:"Busy friends with kids and jobs wanted a low-effort way to stay connected through football, without fantasy football's time commitment or real-money betting.",
+ built:"A Home Screen app for iPhone and Android, hosted on GitHub Pages and launched before the 2026 NFL season. All data and rules (player identity, wager caps, kickoff locks, bankroll limits, grading) live in a Google Apps Script backend that checks each player's private link on every request, so the public app files hold no secrets.",
+ impact:"Keeps a group of busy friends engaged week to week. Three players this season, expanding to 8 to 10 for 2027.",
  plain:"A phone app for our football league's friendly betting game. It tracks everyone's picks and pretend bankroll, locks bets at kickoff, and scores the results automatically."},
 {t:"Nemethy Super Bowl App",c:"Future",tools:[],pitch:"A family Super Bowl app, planned next.",wip:1,plain:"Something fun for our family's Super Bowl, coming next."}
 ];
