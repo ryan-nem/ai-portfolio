@@ -66,20 +66,27 @@ svg text{font:500 13px Inter,sans-serif;fill:var(--ink);paint-order:stroke;strok
 .card p{color:var(--mut);font-size:15px}
 .see{position:absolute;top:10px;right:10px;z-index:2;display:inline-flex;align-items:center;gap:6px;font:600 13px Inter,sans-serif;color:var(--mag);background:var(--b3);border:1px solid color-mix(in srgb,var(--mag) 30%,transparent);border-radius:999px;padding:0 12px;min-height:36px;cursor:pointer}
 .see svg{width:14px;height:14px}
-.phone{flex:1;min-height:0;aspect-ratio:9/19;max-width:100%;border:6px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--bg)}
+.phone{flex:1;min-height:0;aspect-ratio:720/1472;max-width:100%;border:6px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--bg)}
 .browser{flex:none;margin:auto 0;width:100%;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.12)}
 .browser .bar{flex:none;height:18px;display:flex;align-items:center;gap:5px;padding:0 8px;background:#e9e7ee}
 .browser .bar i{width:7px;height:7px;border-radius:50%;background:#c9c5d0}
 .browser .reel{aspect-ratio:16/10;height:auto}
-.browser .reel img{object-fit:contain;object-position:center;background:#fff}
+.browser .reel img{object-fit:contain;object-position:center top;background:#fff}
 .reel{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
 .reel::-webkit-scrollbar{display:none}
 .reel img{flex:none;width:100%;height:100%;object-fit:cover;object-position:top;scroll-snap-align:start}
-.dots{display:flex;gap:6px}
-.dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}
-.dots i.on{background:var(--mag)}
-.shots{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:16px;padding-bottom:6px}
-.shots img{flex:none;height:min(420px,60vh);max-width:85%;border-radius:14px;border:1px solid var(--line);object-fit:contain;scroll-snap-align:start;background:var(--panel)}
+.car{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;min-height:0}
+.back .car{flex:1}
+.nav{flex:none;display:flex;align-items:center;gap:10px}
+.nav button.arr{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:600 18px/1 Inter,sans-serif;cursor:pointer;display:grid;place-items:center;padding:0}
+.nav button.arr:disabled{opacity:.35;cursor:default}
+.nav .dots{display:flex;gap:4px}
+.nav .dots button{width:20px;height:20px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.nav .dots button::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--line)}
+.nav .dots button.on::before{background:var(--mag)}
+.dlg .car{margin-top:16px}
+.dlg .phone{flex:none;height:min(560px,62vh);width:auto}
+.dlg .browser{margin:0}
 @media(prefers-reduced-motion:reduce){.inner{transition:none}}
 .tools{font-size:13px;color:var(--mut);margin-top:auto;padding-top:6px;border-top:1px solid var(--line)}
 .wip{font-size:13px;color:var(--mut);font-style:italic}
@@ -178,6 +185,22 @@ const stageRange=k=>{const a=ST[k].from,b=ST[k+1]?ST[k+1].from-1:null;
  if(b==null)return `${mLabel(a)} – now`;
  return ya===yb?`${MO[a%12]} – ${MO[b%12]} ${ya}`:`${mLabel(a)} – ${mLabel(b)}`;};
 const monIco='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="2.5" width="13" height="9" rx="1.5"/><path d="M6 14h4M8 11.5V14"/></svg>';
+function car(p,sh){
+ const fr=p.frame==="browser"?`<div class="browser"><div class="bar"><i></i><i></i><i></i></div>`:`<div class="phone">`;
+ const imgs=sh.map((u,k)=>`<img src="${esc(u)}" alt="${esc(p.t)} screen ${k+1}" loading="lazy">`).join("");
+ const nav=sh.length>1?`<div class="nav"><button class="arr prev" aria-label="Previous screen" disabled>‹</button><div class="dots">${sh.map((_,k)=>`<button class="${k?"":"on"}" data-k="${k}" aria-label="Screen ${k+1}"></button>`).join("")}</div><button class="arr next" aria-label="Next screen">›</button></div>`:"";
+ return `<div class="car">${fr}<div class="reel">${imgs}</div></div>${nav}</div>`;
+}
+function wire(root){
+ root.querySelectorAll(".car").forEach(c=>{const r=c.querySelector(".reel");
+  const upd=()=>{const k=Math.round(r.scrollLeft/Math.max(1,r.clientWidth)),n=r.children.length;
+   c.querySelectorAll(".dots button").forEach((d,j)=>d.classList.toggle("on",j===k));
+   const pv=c.querySelector(".prev"),nx=c.querySelector(".next");if(pv)pv.disabled=k<=0;if(nx)nx.disabled=k>=n-1;};
+  r.addEventListener("scroll",upd,{passive:true});});
+}
+function go(btn){const c=btn.closest(".car"),r=c.querySelector(".reel"),w=r.clientWidth,k=Math.round(r.scrollLeft/Math.max(1,w));
+ const t=btn.dataset.k!=null?+btn.dataset.k:btn.classList.contains("prev")?k-1:k+1;
+ r.scrollTo({left:Math.max(0,Math.min(r.children.length-1,t))*w,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});}
 const phoneIco='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="1.5" width="8" height="13" rx="2"/><path d="M7 12.2h2"/></svg>';
 
 function lede(){$("lede").textContent=`Ten years of HR leadership in aerospace manufacturing and aviation software. Since ${MOL[since[1]-1]} ${since[0]} I've moved from using AI to designing and shipping AI tools for HR and home.`;}
@@ -207,10 +230,9 @@ function grid(){
     <p>${esc(p.pitch)}</p>
     ${p.tools.length?`<div class="tools">${esc(p.tools.join(" · "))}</div>`:""}
    </div>
-   ${sh?`<div class="face back" aria-hidden="true">${p.frame==="browser"?`<div class="browser"><div class="bar"><i></i><i></i><i></i></div>`:`<div class="phone">`}<div class="reel">${sh.map((u,k)=>`<img src="${esc(u)}" alt="${esc(p.t)} screen ${k+1}" loading="lazy">`).join("")}</div></div>${sh.length>1?`<div class="dots">${sh.map((_,k)=>`<i class="${k?"":"on"}"></i>`).join("")}</div>`:""}</div>`:""}
+   ${sh?`<div class="face back" aria-hidden="true">${car(p,sh)}</div>`:""}
   </div></article>`;}).join("");
- document.querySelectorAll(".reel").forEach(r=>r.addEventListener("scroll",()=>{const k=Math.round(r.scrollLeft/r.clientWidth);
-  r.closest(".back").querySelectorAll(".dots i").forEach((d,j)=>d.classList.toggle("on",j===k));},{passive:true}));
+ wire($("grid"));
  teach();
 }
 function flip(card){
@@ -241,10 +263,10 @@ function open(i){
  const sh=Array.isArray(p.shots)?p.shots:[];
  $("dbody").innerHTML=`<div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">${SN[p.s]}</span>`:""}</div>
   <h2 id="dt" style="margin-top:10px">${esc(p.t)}</h2><p style="color:var(--mut)">${esc(p.pitch)}</p>
-  ${sh.length?`<div class="shots">${sh.map((u,k)=>`<img src="${esc(u)}" alt="${esc(p.t)} screen ${k+1}" loading="lazy">`).join("")}</div>`:""}
+  ${sh.length?car(p,sh):""}
   <div class="dl">${rows.length?rows.map(r=>`<div><h4>${esc(r[0])}</h4><p>${esc(r[1])}</p></div>`).join(""):`<p class="wip">Full write-up in progress.</p>`}</div>
   ${p.tools.length?`<p class="tools" style="margin-top:18px">Built with ${esc(p.tools.join(", "))}</p>`:""}`;
- $("ov").classList.add("on");$("x").focus();
+ wire($("dbody"));$("ov").classList.add("on");$("x").focus();
 }
 function close(){$("ov").classList.remove("on");}
 
@@ -305,11 +327,13 @@ const ro=new ResizeObserver(draw);ro.observe(svg);
 function render(){lede();stats();chips();grid();stages();tools();}
 $("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;filt=b.dataset.c;chips();grid();});
 $("grid").addEventListener("click",e=>{
+ const a=e.target.closest(".nav button");if(a){e.stopPropagation();go(a);return;}
  const f=e.target.closest(".see");if(f){e.stopPropagation();flip(f.closest(".card"));return;}
  const c=e.target.closest(".card");if(!c)return;
  if(c.classList.contains("flip")){if(!e.target.closest(".reel"))flip(c);return;}
  open(+c.dataset.i);});
 $("grid").addEventListener("keydown",e=>{const c=e.target.closest(".card");if(c&&e.target===c&&(e.key==="Enter"||e.key===" ")){e.preventDefault();open(+c.dataset.i);}});
+$("dbody").addEventListener("click",e=>{const a=e.target.closest(".nav button");if(a)go(a);});
 $("x").onclick=close;$("ov").addEventListener("click",e=>{if(e.target.id==="ov")close();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")close();});
 render();
