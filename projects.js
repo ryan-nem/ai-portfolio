@@ -71,10 +71,12 @@ window.PROJECTS=[
  built:"A Home Screen app for iPhone and Android, hosted on GitHub Pages and launched before the 2026 NFL season. All data and rules (player identity, wager caps, kickoff locks, bankroll limits, grading) live in a Google Apps Script backend that checks each player's private link on every request, so the public app files hold no secrets.",
  impact:"Keeps a group of busy friends engaged week to week. Three players this season, expanding to 8 to 10 for 2027.",
  plain:"A phone app for our football league's friendly betting game. It tracks everyone's picks and pretend bankroll, locks bets at kickoff, and scores the results automatically."},
-{t:"Nemethy Super Bowl App",c:"Future",tools:[],pitch:"A family Super Bowl app, planned next.",wip:1,plain:"Something fun for our family's Super Bowl, coming next."}
-];
-window.STAGES=[
-{n:"AI as assistant",w:"Jan – Apr 2026",d:"Using AI to run my day: prioritizing work across channels and automating the monitoring I used to do by hand.",pd:"I started by letting AI handle my busywork: sorting my day and watching spreadsheets for me."},
+{t:"Nemethy Super Bowl App",c:"Future",tools:[],
+ pitch:"Live prop bets and squares for our Super Bowl party, with winners calculated automatically in real time.",
+ problem:"Our Super Bowl prop bets and squares for about 90 people were run by hand, which cost my wife and me hours during the game itself, and results only came out after it ended.",
+ built:"Planned for Super Bowl LXI (February 2027): an app for a series of prop bets plus squares that calculates winners automatically and sends real-time updates during the game.",
+ impact:"Will give back hours of hand work on game day and keep roughly 90 people engaged live instead of waiting for results.",
+ plain:"An app that runs our big Super Bowl party games and shows who's winning as the game happens."},
 {n:"AI as builder",w:"May – Aug 2026",d:"Shipping my first deployed app, built and released through GitHub into company Slack.",pd:"I built my first real app that other people at work used."},
 {n:"AI-driven development",w:"Sep 2026 – now",d:"Prototyping in Amazon Quick, building in Kiro with Firebase, following the AI-DLC methodology.",pd:"Now I design and build full apps with AI, at work and at home."}
 ];
