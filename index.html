@@ -150,10 +150,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 
 <div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="dt"><div class="dlg"><button class="x" id="x" aria-label="Close">×</button><div id="dbody"></div></div></div>
 
-<script src="projects.js"></script>
+<script>document.write('<script src="projects.js?v='+Date.now()+'"><\/script>')</script>
 <script>
 {
 const P=window.PROJECTS,ST=window.STAGES,TL=window.TOOLKIT,SITE=window.SITE||{};
+ST.forEach((s,k)=>{if(typeof s.from!=="number")s.from=[0,4,8][k]??k*4;});
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let filt="All";const SN=["","Assistant","Builder","Developer"];
 const $=id=>document.getElementById(id);
