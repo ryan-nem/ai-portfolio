@@ -3,11 +3,12 @@
 // (0 = start of Jan 2026, 10.5 = mid Nov), tools, pitch, problem, built, impact, privacy,
 // sh: short name for the chart label (optional), wip: 1 shows "Write-up in progress".
 window.PROJECTS=[
-{t:"AI Daily Prioritization Assistant",sh:"Daily Prioritization",c:"Work",s:1,m:1.2,tools:["Claude"],
- pitch:"A prioritized plan for each day, built from calendar, email, Jira and Slack.",
- problem:"Requests arrive across four channels and several time zones, so deciding what matters first took real time every morning.",
- built:"Claude reviews calendar, email, Jira and Slack, applies urgency rules I defined, and weighs correspondents' time zones to produce a ranked list for the day.",
- plain:"Every morning the AI reads my calendar, email and work chat and tells me what to tackle first, the way a great assistant would."},
+{t:"AI Daily Prioritization Assistant",sh:"Daily Prioritization",c:"Work",s:1,m:2.2,tools:["Claude"],
+ pitch:"A prioritized plan refreshed three times a day from my calendar, email, Jira and Slack.",
+ problem:"Requests arrived across four channels and several time zones, and I was triaging by whatever sat at the top of my inbox.",
+ built:"A scheduled Claude task that runs three times a day with connectors to calendar, email, Jira and Slack. It applies urgency rules I defined and weighs each correspondent's time zone to produce a ranked priority list. In daily use since March 2026.",
+ impact:"Saves about 5 hours a week of triage, and changed how I work: I now respond by time zone and urgency instead of inbox order.",
+ plain:"Three times a day the AI reads my calendar, email and work chat and tells me what to tackle first."},
 {t:"Google Sheets Change Monitor",sh:"Sheets Monitor",c:"Work",s:1,m:2.4,tools:["Google Apps Script"],
  pitch:"Automatic alerts when key work spreadsheets change.",
  problem:"Several shared Google Sheets needed watching for specific changes, which meant checking them by hand.",
