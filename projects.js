@@ -1,0 +1,47 @@
+// Portfolio content. To add a project, copy one entry in PROJECTS and edit it.
+// Fields: t title, c category (Work | Personal | Future), s stage (1-3), m month position on the chart
+// (0 = start of Jan 2026, 10.5 = mid Nov), tools, pitch, problem, built, impact, privacy, plain (family version),
+// wip: 1 shows "Write-up in progress".
+window.PROJECTS=[
+{t:"AI Daily Prioritization Assistant",c:"Work",s:1,m:1.2,tools:["Claude"],
+ pitch:"A prioritized plan for each day, built from calendar, email, Jira and Slack.",
+ problem:"Requests arrive across four channels and several time zones, so deciding what matters first took real time every morning.",
+ built:"Claude reviews calendar, email, Jira and Slack, applies urgency rules I defined, and weighs correspondents' time zones to produce a ranked list for the day.",
+ plain:"Every morning the AI reads my calendar, email and work chat and tells me what to tackle first, the way a great assistant would."},
+{t:"Google Sheets Change Monitor",c:"Work",s:1,m:2.4,tools:["Google Apps Script"],
+ pitch:"Automatic alerts when key work spreadsheets change.",
+ problem:"Several shared Google Sheets needed watching for specific changes, which meant checking them by hand.",
+ built:"Apps Script automations watch the sheets and send me an update only when the changes I care about happen.",
+ plain:"Instead of checking a pile of spreadsheets, a small program watches them and pings me when something important changes."},
+{t:"Employee Sentiment Monitor",c:"Work",s:2,m:5.6,tools:["Claude","GitHub","Slack"],
+ pitch:"Aggregated, anonymized themes from company Slack channels.",
+ problem:"Leaders wanted a read on employee sentiment without surveys or reading individual messages.",
+ built:"A Slack app, built and deployed through GitHub into company channels, that reports aggregated, anonymized themes.",
+ privacy:"Privacy by design: it reports only themes, and deliberately leaves out names and any detail that could identify someone.",
+ plain:"A tool that sums up the general mood in work chat as broad themes. It never names anyone or repeats what a person said."},
+{t:"Executive Compensation Tool",c:"Work",s:3,m:9.3,tools:["Amazon Quick","Kiro"],
+ pitch:"An internal app for executive compensation work, prototyped in Quick and built in Kiro.",
+ problem:"Executive compensation work needed a purpose-built tool with tight control over who sees what.",
+ built:"Requirements and a prototype UI in Amazon Quick, moving to full development in Kiro, with role-based security to control access.",
+ plain:"A private work app for handling executive pay, designed so only the right people can see sensitive numbers."},
+{t:"HR AI Project Management Tracker",c:"Work",s:3,tools:[],pitch:"A tracker for running HR's AI projects.",wip:1,
+ plain:"A shared tracker that keeps HR's AI projects organized."},
+{t:"No-Meeting-Day AI Challenge",c:"Work",s:3,tools:[],pitch:"An HR team challenge to build with AI on a protected no-meeting day.",wip:1,
+ plain:"A day with no meetings where the HR team tries building something useful with AI."},
+{t:"Upkeepr",c:"Personal",s:3,m:10.4,tools:["Google Apps Script"],
+ pitch:"A home maintenance app that spreads the year's upkeep into manageable pieces.",
+ problem:"Annual and multi-year home tasks pile up, and only one or two can realistically be handled at a time.",
+ built:"An Apps Script app with a home screen, notes that set the next check-in, and reminders from 24 hours to 10 days ahead depending on whether a pro has to be booked.",
+ plain:"An app that reminds me about house chores, like the furnace filter or gutters, early enough to plan and never all at once."},
+{t:"Chef Nem",c:"Personal",tools:[],pitch:"A meal planner for the family.",wip:1,plain:"An AI helper that plans our family meals."},
+{t:"DressHim",c:"Personal",tools:[],pitch:"A stylist assistant for work outfits.",wip:1,plain:"An AI stylist that helps pick work outfits."},
+{t:"Fitness App",c:"Personal",tools:[],pitch:"A personal fitness app.",wip:1,plain:"An app that helps with workouts."},
+{t:"NFL Betting Simulator",c:"Personal",tools:[],pitch:"A simulator for testing NFL betting strategies.",wip:1,plain:"A game-like simulator for trying out football picks without real money."},
+{t:"Nemethy Super Bowl App",c:"Future",tools:[],pitch:"A family Super Bowl app, planned next.",wip:1,plain:"Something fun for our family's Super Bowl, coming next."}
+];
+window.STAGES=[
+{n:"AI as assistant",w:"Jan – Apr 2026",d:"Using AI to run my day: prioritizing work across channels and automating the monitoring I used to do by hand.",pd:"I started by letting AI handle my busywork: sorting my day and watching spreadsheets for me."},
+{n:"AI as builder",w:"May – Aug 2026",d:"Shipping my first deployed app, built and released through GitHub into company Slack.",pd:"I built my first real app that other people at work used."},
+{n:"AI-driven development",w:"Sep 2026 – now",d:"Prototyping in Amazon Quick, building in Kiro with Firebase, following the AI-DLC methodology.",pd:"Now I design and build full apps with AI, at work and at home."}
+];
+window.TOOLKIT=[["Claude","Jan 2026","Daily planning, building, and challenging my thinking"],["Google Apps Script","Jan 2026","Automations and the Upkeepr app"],["GitHub","May 2026","Building and deploying the Slack app"],["Amazon Quick","Sep 2026","Prototypes and requirements"],["Kiro","Sep 2026","AI-assisted app development"],["Firebase","Sep 2026","App backend"],["AI-DLC methodology","Sep 2026","A structured AI development lifecycle"]];

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ryan Nemethy AI Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE  professional portfolio, confident and plain; readable by a recruiter or a parent
+   IDEA   an aviation sectional chart / flight log: the AI journey drawn as a climb through three altitudes
+   PICTURE full-width climb profile Jan 2026 to now, three stage bands, projects as waypoints
+   COLOUR white ground, near-black ink, sectional magenta lead, chart blue support, pale lavender panels
+   TYPE   Archivo expanded 800 display + Inter text
+   LAYOUT name and toggle across top, climb chart full width beneath, figure row; then projects grid, journey, toolkit */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#0f1115);--ink:light-dark(#15171b,#eef0f4);--mut:light-dark(#5b6170,#a3a9b7);
+--mag:light-dark(#a3236b,#ff7ab8);--blue:light-dark(#1f5fa8,#86b6ff);--panel:light-dark(#f5f1f7,#1a1c23);
+--line:light-dark(#e3dde8,#2b2e38);--b1:light-dark(#eef4fb,#141b26);--b2:light-dark(#f3eef8,#1b1726);--b3:light-dark(#fbeef4,#26161f)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+.band{padding-block:clamp(28px,4vw,64px);padding-left:max(5vw,16px);padding-right:max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1,h2,h3{font-family:Archivo,Inter,sans-serif;font-stretch:112%;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0;text-wrap:balance}
+h1{font-size:clamp(32px,5.2vw,52px)}
+h2{font-size:clamp(26px,3.4vw,36px);margin-bottom:8px}
+h3{font-size:19px;letter-spacing:-.01em}
+p{margin:0}
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;padding:12px max(5vw,16px)}
+nav b{font-family:Archivo,sans-serif;font-stretch:112%;margin-right:auto}
+nav a{color:var(--mut);text-decoration:none;font-size:15px;padding:6px 0}
+nav a:hover{color:var(--mag)}
+.hero{display:grid;gap:22px}
+.top{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:end;justify-content:space-between}
+.lede{font-size:17px;color:var(--mut);max-width:62ch;margin-top:12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px;background:var(--panel)}
+.seg button{font:600 15px Inter,sans-serif;border:0;background:none;color:var(--mut);padding:10px 16px;border-radius:999px;cursor:pointer;min-height:44px}
+.seg button[aria-pressed=true]{background:var(--mag);color:#fff}
+button:focus-visible,a:focus-visible,.card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.fig{position:relative;min-height:340px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg)}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+svg text{font:500 13px Inter,sans-serif;fill:var(--ink);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+.cap{font-size:13px;color:var(--mut);margin-top:-12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));border-top:2px solid var(--ink)}
+.stats div{padding:14px 12px 0 0}
+.stats strong{display:block;font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,4vw,40px);line-height:1;color:var(--mag)}
+.stats span{font-size:14px;color:var(--mut)}
+.alt{background:var(--panel)}
+.head{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:end;justify-content:space-between;margin-bottom:22px}
+.head p{color:var(--mut);max-width:60ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 15px Inter,sans-serif;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 16px;border-radius:999px;cursor:pointer;min-height:44px}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:16px}
+.card{display:flex;flex-direction:column;gap:10px;text-align:left;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-2px);border-color:var(--mag)}
+.meta{display:flex;flex-wrap:wrap;gap:6px;font-size:13px}
+.tag{padding:3px 9px;border-radius:999px;background:var(--panel);color:var(--mut);white-space:nowrap}
+.tag.s1{background:var(--b1);color:var(--blue)}.tag.s2{background:var(--b2);color:var(--ink)}.tag.s3{background:var(--b3);color:var(--mag)}
+.card p{color:var(--mut);font-size:15px}
+.tools{font-size:13px;color:var(--mut);margin-top:auto;padding-top:6px;border-top:1px solid var(--line)}
+.wip{font-size:13px;color:var(--mut);font-style:italic}
+.stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:0;border-top:2px solid var(--ink)}
+.stage{padding:18px 20px 6px 0}
+.stage .when{font-size:14px;color:var(--mag);font-weight:600;white-space:nowrap}
+.stage h3{margin:4px 0 8px}
+.stage p{color:var(--mut);font-size:15px}
+.stage ul{margin:10px 0 0;padding-left:18px;font-size:15px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:32px}
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.tl b{font-weight:600}
+.tl span{color:var(--mut);font-size:14px;white-space:nowrap}
+.tl small{grid-column:2;color:var(--mut);font-size:14px}
+.learn{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.learn li{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.learn b{display:block;margin-bottom:2px}
+.learn span{color:var(--mut);font-size:15px}
+footer{border-top:1px solid var(--line);color:var(--mut);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+.ov{position:fixed;inset:0;background:rgba(10,10,20,.5);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.ov.on{display:flex}
+.dlg{background:var(--bg);color:var(--ink);border-radius:16px;max-width:640px;width:100%;max-height:88vh;overflow:auto;padding:24px;position:relative;border:1px solid var(--line)}
+.dlg h2{padding-right:48px}
+.x{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:22px;cursor:pointer}
+.dl{display:grid;gap:14px;margin-top:16px}
+.dl div{border-left:3px solid var(--mag);padding-left:12px}
+.dl h4{margin:0 0 2px;font-size:14px;color:var(--mag)}
+@media(max-width:600px){nav a{font-size:14px}.fig{min-height:300px}}
+@media(prefers-reduced-motion:reduce){.card{transition:none}#plane{display:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><b>Ryan Nemethy</b><a href="#projects">Projects</a><a href="#journey">Journey</a><a href="#toolkit">Toolkit</a></div></nav>
+
+<header class="band"><div class="wrap hero">
+  <div class="top">
+    <div>
+      <h1>An HR leader who builds with AI</h1>
+      <p class="lede" id="lede"></p>
+    </div>
+    <div class="seg" role="group" aria-label="Explanation style">
+      <button id="m-pro" aria-pressed="true">Professional</button>
+      <button id="m-plain" aria-pressed="false">Plain English</button>
+    </div>
+  </div>
+  <div class="fig" id="fig" role="img" aria-label="Climb profile of Ryan's AI work from January 2026 to now, rising through three stages with projects as waypoints"><svg id="climb"></svg></div>
+  <p class="cap">Flight log, January 2026 to today. Waypoint positions within each stage are approximate.</p>
+  <div class="stats" id="stats"></div>
+</div></header>
+
+<section class="band alt" id="projects"><div class="wrap">
+  <div class="head">
+    <div><h2>Projects</h2><p>Tap any project for the problem, what I built and why it matters.</p></div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section class="band" id="journey"><div class="wrap">
+  <div class="head"><div><h2>From using AI to building with it</h2><p>Three stages in under a year, each one changing what I could take on.</p></div></div>
+  <div class="stages" id="stages"></div>
+</div></section>
+
+<section class="band alt" id="toolkit"><div class="wrap two">
+  <div><h2>Toolkit</h2><ul class="tl" id="tools"></ul></div>
+  <div><h2>How my thinking changed</h2><ul class="learn">
+    <li><b>Prompting became specifying</b><span>Better prompt engineering turned into writing clear requirements for software.</span></li>
+    <li><b>The whole development lifecycle</b><span>I understand each step from requirements to build, deploy and secure access, not just the AI part.</span></li>
+    <li><b>AI as a challenger</b><span>I use AI to stress-test ideas from perspectives I don't naturally take.</span></li>
+    <li><b>Clearer writing</b><span>Explaining problems precisely to a machine made me sharper with people too.</span></li>
+  </ul></div>
+</div></section>
+
+<footer class="band"><div class="wrap"><span>Ryan Nemethy · HR leader · Englewood, Colorado</span><span>Updated November 2026</span></div></footer>
+
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="dt"><div class="dlg"><button class="x" id="x" aria-label="Close">×</button><div id="dbody"></div></div></div>
+
+<script src="projects.js"></script>
+<script>
+{
+const P=window.PROJECTS,ST=window.STAGES,TL=window.TOOLKIT;
+const esc=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let plain=false,filt="All";
+const $=id=>document.getElementById(id);
+
+function lede(){$("lede").textContent=plain
+ ?"I work in HR, and this year I taught myself to build tools with AI. Here's what I made and what each one does, in everyday words."
+ :"Ten years of HR leadership in aerospace manufacturing and aviation software. Since January 2026 I've moved from using AI to designing and shipping AI tools for HR and home.";}
+
+function stats(){
+ const tools=new Set(TL.map(t=>t[0])).size;
+ const built=P.filter(p=>p.c!=="Future").length;
+ $("stats").innerHTML=[[built,"projects built or in progress"],[tools,"tools and methods"],[3,"stages of growth"],["11","months building"]]
+  .map(([n,l])=>`<div><strong>${esc(n)}</strong><span>${esc(l)}</span></div>`).join("");
+}
+
+function chips(){
+ $("chips").innerHTML=["All","Work","Personal","Future"].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c===filt}">${c}</button>`).join("");
+}
+function grid(){
+ $("grid").innerHTML=P.map((p,i)=>({p,i})).filter(o=>filt==="All"||o.p.c===filt).map(({p,i})=>`
+ <button class="card" data-i="${i}">
+  <div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">Stage ${p.s}</span>`:""}</div>
+  <h3>${esc(p.t)}</h3>
+  <p>${esc(plain?p.plain:p.pitch)}</p>
+  ${p.wip?`<span class="wip">Write-up in progress</span>`:""}
+  ${p.tools.length?`<div class="tools">${esc(p.tools.join(" · "))}</div>`:""}
+ </button>`).join("");
+}
+function stages(){
+ $("stages").innerHTML=ST.map((s,k)=>{
+  const ps=P.filter(p=>p.s===k+1&&!p.wip).map(p=>`<li>${esc(p.t)}</li>`).join("");
+  return `<div class="stage"><span class="when">${esc(s.w)}</span><h3>${k+1}. ${esc(s.n)}</h3><p>${esc(plain?s.pd:s.d)}</p>${ps?`<ul>${ps}</ul>`:""}</div>`;}).join("");
+}
+function tools(){
+ $("tools").innerHTML=TL.map(t=>`<li><b>${esc(t[0])}</b><span>${esc(t[1])}</span><small>${esc(t[2])}</small></li>`).join("");
+}
+function open(i){
+ const p=P[i];
+ const rows=plain?[["In plain English",p.plain]]:[["The problem",p.problem],["What I built",p.built],["Privacy",p.privacy],["Impact",p.impact]].filter(r=>r[1]);
+ $("dbody").innerHTML=`<div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">Stage ${p.s}</span>`:""}</div>
+  <h2 id="dt" style="margin-top:10px">${esc(p.t)}</h2><p style="color:var(--mut)">${esc(p.pitch)}</p>
+  <div class="dl">${rows.length?rows.map(r=>`<div><h4>${esc(r[0])}</h4><p>${esc(r[1])}</p></div>`).join(""):`<p class="wip">Full write-up in progress.</p>`}</div>
+  ${p.tools.length?`<p class="tools" style="margin-top:18px">Built with ${esc(p.tools.join(", "))}</p>`:""}`;
+ $("ov").classList.add("on");$("x").focus();
+}
+function close(){$("ov").classList.remove("on");}
+
+const svg=$("climb");
+const sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x);
+const alt=m=>.18+.36*sm((m-3.6)/1.2)+.34*sm((m-7.6)/1.2);
+function draw(){
+ const W=svg.clientWidth,H=svg.clientHeight,narrow=W<560;
+ const L=narrow?14:24,R=narrow?14:28,T=46,B=34,iw=W-L-R,ih=H-T-B;
+ const X=m=>L+m/11*iw,Y=a=>T+ih-a*ih;
+ const cs=getComputedStyle(document.documentElement);
+ let o="";
+ const bands=[[0,4,"--b1","1 · Assistant"],[4,8,"--b2","2 · Builder"],[8,11,"--b3","3 · Developer"]];
+ bands.forEach(([a,b,c,n])=>{o+=`<rect x="${X(a)}" y="0" width="${X(b)-X(a)}" height="${H}" fill="var(${c})"/>`;
+  o+=`<text x="${X(a)+10}" y="26" style="font-weight:600">${narrow?n.split(" · ")[0]:n}</text>`;});
+ const mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov"];
+ mo.forEach((t,k)=>{if(narrow&&k%2)return;o+=`<text x="${X(k+.5)}" y="${H-12}" text-anchor="middle" style="fill:var(--mut)">${t}</text>`;});
+ for(let a=.25;a<1;a+=.25)o+=`<line x1="${L}" x2="${W-R}" y1="${Y(a)}" y2="${Y(a)}" stroke="var(--line)" stroke-dasharray="2 5"/>`;
+ let d="",f="";
+ for(let k=0;k<=110;k++){const m=k/10;d+=(k?"L":"M")+X(m).toFixed(1)+" "+Y(alt(m)).toFixed(1);}
+ f=d+`L${X(11)} ${T+ih}L${X(0)} ${T+ih}Z`;
+ o+=`<path d="${f}" fill="var(--mag)" opacity=".10"/><path id="route" d="${d}" fill="none" stroke="var(--mag)" stroke-width="3.5" stroke-linecap="round"/>`;
+ P.filter(p=>p.m!=null).forEach((p,k)=>{
+  const x=X(p.m),y=Y(alt(p.m)),up=k%2===0;
+  const ly=up?y-16:y+26;
+  o+=`<circle cx="${x}" cy="${y}" r="7" fill="var(--bg)" stroke="var(--mag)" stroke-width="3"/>`;
+  const lab=narrow?String(P.indexOf(p)+1):p.t.replace("AI Daily ","").replace(" Assistant","").replace("Google ","").replace("Employee ","").replace("Executive","Exec");
+  const anc=x>W*.8?"end":x<W*.2?"start":"middle";
+  o+=`<text x="${x}" y="${ly}" text-anchor="${anc}">${esc(lab)}</text>`;
+ });
+ const nx=X(11),ny=Y(alt(11));
+ o+=`<g id="plane" transform="translate(${nx-14},${ny}) rotate(-20)"><path d="M-12 0 L10 0 L16 -3 L16 3 L10 0 M0 0 L-6 -9 L-2 -9 L5 0 L-2 9 L-6 9 Z" fill="var(--blue)" stroke="var(--blue)" stroke-width="1.5" stroke-linejoin="round"/></g>`;
+ svg.innerHTML=o;
+}
+const ro=new ResizeObserver(draw);ro.observe(svg);
+
+function render(){lede();stats();chips();grid();stages();tools();}
+function mode(p){plain=p;$("m-pro").setAttribute("aria-pressed",!p);$("m-plain").setAttribute("aria-pressed",p);render();}
+$("m-pro").onclick=()=>mode(false);$("m-plain").onclick=()=>mode(true);
+$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;filt=b.dataset.c;chips();grid();});
+$("grid").addEventListener("click",e=>{const b=e.target.closest(".card");if(b)open(+b.dataset.i);});
+$("x").onclick=close;$("ov").addEventListener("click",e=>{if(e.target.id==="ov")close();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")close();});
+render();
+}
+</script>
+</body>
