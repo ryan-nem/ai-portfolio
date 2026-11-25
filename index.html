@@ -137,7 +137,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 {
 const P=window.PROJECTS,ST=window.STAGES,TL=window.TOOLKIT;
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let filt="All";
+let filt="All";const SN=["","Assistant","Builder","Developer"];
 const $=id=>document.getElementById(id);
 
 function lede(){$("lede").textContent="Ten years of HR leadership in aerospace manufacturing and aviation software. Since January 2026 I've moved from using AI to designing and shipping AI tools for HR and home.";}
@@ -155,7 +155,7 @@ function chips(){
 function grid(){
  $("grid").innerHTML=P.map((p,i)=>({p,i})).filter(o=>filt==="All"||o.p.c===filt).map(({p,i})=>`
  <button class="card" data-i="${i}">
-  <div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">Stage ${p.s}</span>`:""}</div>
+  <div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">${SN[p.s]}</span>`:""}</div>
   <h3>${esc(p.t)}</h3>
   <p>${esc(p.pitch)}</p>
   ${p.wip?`<span class="wip">Write-up in progress</span>`:""}
@@ -173,7 +173,7 @@ function tools(){
 function open(i){
  const p=P[i];
  const rows=[["The problem",p.problem],["What I built",p.built],["Privacy",p.privacy],["Impact",p.impact]].filter(r=>r[1]);
- $("dbody").innerHTML=`<div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">Stage ${p.s}</span>`:""}</div>
+ $("dbody").innerHTML=`<div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">${SN[p.s]}</span>`:""}</div>
   <h2 id="dt" style="margin-top:10px">${esc(p.t)}</h2><p style="color:var(--mut)">${esc(p.pitch)}</p>
   <div class="dl">${rows.length?rows.map(r=>`<div><h4>${esc(r[0])}</h4><p>${esc(r[1])}</p></div>`).join(""):`<p class="wip">Full write-up in progress.</p>`}</div>
   ${p.tools.length?`<p class="tools" style="margin-top:18px">Built with ${esc(p.tools.join(", "))}</p>`:""}`;
