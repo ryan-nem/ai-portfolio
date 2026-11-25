@@ -36,11 +36,8 @@ nav a:hover{color:var(--mag)}
 .hero{display:grid;gap:22px}
 .top{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:end;justify-content:space-between}
 .lede{font-size:17px;color:var(--mut);max-width:62ch;margin-top:12px}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px;background:var(--panel)}
-.seg button{font:600 15px Inter,sans-serif;border:0;background:none;color:var(--mut);padding:10px 16px;border-radius:999px;cursor:pointer;min-height:44px}
-.seg button[aria-pressed=true]{background:var(--mag);color:#fff}
 button:focus-visible,a:focus-visible,.card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-.fig{position:relative;min-height:340px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg)}
+.fig{position:relative;min-height:300px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg)}
 .fig>svg{position:absolute;inset:0;width:100%;height:100%}
 svg text{font:500 13px Inter,sans-serif;fill:var(--ink);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
 .cap{font-size:13px;color:var(--mut);margin-top:-12px}
@@ -90,7 +87,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 .dl div{border-left:3px solid var(--mag);padding-left:12px}
 .dl h4{margin:0 0 2px;font-size:14px;color:var(--mag)}
 @media(max-width:600px){nav a{font-size:14px}.fig{min-height:300px}}
-@media(prefers-reduced-motion:reduce){.card{transition:none}#plane{display:none}}
+@media(prefers-reduced-motion:reduce){.card{transition:none}}
 </style>
 </head>
 <body>
@@ -101,10 +98,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     <div>
       <h1>An HR leader who builds with AI</h1>
       <p class="lede" id="lede"></p>
-    </div>
-    <div class="seg" role="group" aria-label="Explanation style">
-      <button id="m-pro" aria-pressed="true">Professional</button>
-      <button id="m-plain" aria-pressed="false">Plain English</button>
     </div>
   </div>
   <div class="fig" id="fig" role="img" aria-label="Climb profile of Ryan's AI work from January 2026 to now, rising through three stages with projects as waypoints"><svg id="climb"></svg></div>
@@ -144,12 +137,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 {
 const P=window.PROJECTS,ST=window.STAGES,TL=window.TOOLKIT;
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let plain=false,filt="All";
+let filt="All";
 const $=id=>document.getElementById(id);
 
-function lede(){$("lede").textContent=plain
- ?"I work in HR, and this year I taught myself to build tools with AI. Here's what I made and what each one does, in everyday words."
- :"Ten years of HR leadership in aerospace manufacturing and aviation software. Since January 2026 I've moved from using AI to designing and shipping AI tools for HR and home.";}
+function lede(){$("lede").textContent="Ten years of HR leadership in aerospace manufacturing and aviation software. Since January 2026 I've moved from using AI to designing and shipping AI tools for HR and home.";}
 
 function stats(){
  const tools=new Set(TL.map(t=>t[0])).size;
@@ -166,7 +157,7 @@ function grid(){
  <button class="card" data-i="${i}">
   <div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">Stage ${p.s}</span>`:""}</div>
   <h3>${esc(p.t)}</h3>
-  <p>${esc(plain?p.plain:p.pitch)}</p>
+  <p>${esc(p.pitch)}</p>
   ${p.wip?`<span class="wip">Write-up in progress</span>`:""}
   ${p.tools.length?`<div class="tools">${esc(p.tools.join(" · "))}</div>`:""}
  </button>`).join("");
@@ -174,14 +165,14 @@ function grid(){
 function stages(){
  $("stages").innerHTML=ST.map((s,k)=>{
   const ps=P.filter(p=>p.s===k+1&&!p.wip).map(p=>`<li>${esc(p.t)}</li>`).join("");
-  return `<div class="stage"><span class="when">${esc(s.w)}</span><h3>${k+1}. ${esc(s.n)}</h3><p>${esc(plain?s.pd:s.d)}</p>${ps?`<ul>${ps}</ul>`:""}</div>`;}).join("");
+  return `<div class="stage"><span class="when">${esc(s.w)}</span><h3>${k+1}. ${esc(s.n)}</h3><p>${esc(s.d)}</p>${ps?`<ul>${ps}</ul>`:""}</div>`;}).join("");
 }
 function tools(){
  $("tools").innerHTML=TL.map(t=>`<li><b>${esc(t[0])}</b><span>${esc(t[1])}</span><small>${esc(t[2])}</small></li>`).join("");
 }
 function open(i){
  const p=P[i];
- const rows=plain?[["In plain English",p.plain]]:[["The problem",p.problem],["What I built",p.built],["Privacy",p.privacy],["Impact",p.impact]].filter(r=>r[1]);
+ const rows=[["The problem",p.problem],["What I built",p.built],["Privacy",p.privacy],["Impact",p.impact]].filter(r=>r[1]);
  $("dbody").innerHTML=`<div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">Stage ${p.s}</span>`:""}</div>
   <h2 id="dt" style="margin-top:10px">${esc(p.t)}</h2><p style="color:var(--mut)">${esc(p.pitch)}</p>
   <div class="dl">${rows.length?rows.map(r=>`<div><h4>${esc(r[0])}</h4><p>${esc(r[1])}</p></div>`).join(""):`<p class="wip">Full write-up in progress.</p>`}</div>
@@ -190,42 +181,51 @@ function open(i){
 }
 function close(){$("ov").classList.remove("on");}
 
-const svg=$("climb");
+const svg=$("climb"),fig=$("fig");
 const sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x);
-const alt=m=>.18+.36*sm((m-3.6)/1.2)+.34*sm((m-7.6)/1.2);
+const alt=m=>.12+.38*sm((m-3.6)/1.2)+.4*sm((m-7.6)/1.2);
+const mc=document.createElement("canvas").getContext("2d");
+const tw=t=>{mc.font="500 13px Inter, system-ui, sans-serif";return mc.measureText(t).width;};
+let lastH=0;
 function draw(){
- const W=svg.clientWidth,H=svg.clientHeight,narrow=W<560;
- const L=narrow?14:24,R=narrow?14:28,T=46,B=34,iw=W-L-R,ih=H-T-B;
- const X=m=>L+m/11*iw,Y=a=>T+ih-a*ih;
- const cs=getComputedStyle(document.documentElement);
- let o="";
- const bands=[[0,4,"--b1","1 · Assistant"],[4,8,"--b2","2 · Builder"],[8,11,"--b3","3 · Developer"]];
- bands.forEach(([a,b,c,n])=>{o+=`<rect x="${X(a)}" y="0" width="${X(b)-X(a)}" height="${H}" fill="var(${c})"/>`;
-  o+=`<text x="${X(a)+10}" y="26" style="font-weight:600">${narrow?n.split(" · ")[0]:n}</text>`;});
- const mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov"];
- mo.forEach((t,k)=>{if(narrow&&k%2)return;o+=`<text x="${X(k+.5)}" y="${H-12}" text-anchor="middle" style="fill:var(--mut)">${t}</text>`;});
- for(let a=.25;a<1;a+=.25)o+=`<line x1="${L}" x2="${W-R}" y1="${Y(a)}" y2="${Y(a)}" stroke="var(--line)" stroke-dasharray="2 5"/>`;
- let d="",f="";
- for(let k=0;k<=110;k++){const m=k/10;d+=(k?"L":"M")+X(m).toFixed(1)+" "+Y(alt(m)).toFixed(1);}
- f=d+`L${X(11)} ${T+ih}L${X(0)} ${T+ih}Z`;
- o+=`<path d="${f}" fill="var(--mag)" opacity=".10"/><path id="route" d="${d}" fill="none" stroke="var(--mag)" stroke-width="3.5" stroke-linecap="round"/>`;
- P.filter(p=>p.m!=null).forEach((p,k)=>{
-  const x=X(p.m),y=Y(alt(p.m)),up=k%2===0;
-  const ly=up?y-16:y+26;
-  o+=`<circle cx="${x}" cy="${y}" r="7" fill="var(--bg)" stroke="var(--mag)" stroke-width="3"/>`;
-  const lab=narrow?String(P.indexOf(p)+1):p.t.replace("AI Daily ","").replace(" Assistant","").replace("Google ","").replace("Employee ","").replace("Executive","Exec");
-  const anc=x>W*.8?"end":x<W*.2?"start":"middle";
-  o+=`<text x="${x}" y="${ly}" text-anchor="${anc}">${esc(lab)}</text>`;
+ const W=svg.clientWidth,narrow=W<560;
+ const L=narrow?12:24,R=narrow?12:28,iw=W-L-R,X=m=>L+m/11*iw;
+ const pts=P.filter(p=>p.m!=null).sort((a,b)=>a.m-b.m);
+ // stack labels into lanes so none overlap
+ const lanes=[],items=pts.map(p=>{
+  const lab=p.sh||p.t,w=tw(lab)+12,x=X(p.m);
+  let cx=Math.min(Math.max(x,L+w/2),W-R-w/2);
+  let k=0;while(lanes[k]!=null&&lanes[k]>cx-w/2)k++;
+  lanes[k]=cx+w/2;return {p,lab,x,cx,k};
  });
- const nx=X(11),ny=Y(alt(11));
- o+=`<g id="plane" transform="translate(${nx-14},${ny}) rotate(-20)"><path d="M-12 0 L10 0 L16 -3 L16 3 L10 0 M0 0 L-6 -9 L-2 -9 L5 0 L-2 9 L-6 9 Z" fill="var(--blue)" stroke="var(--blue)" stroke-width="1.5" stroke-linejoin="round"/></g>`;
+ const LH=22,top=44,zone=lanes.length*LH,T=top+zone+18,B=34,ih=narrow?170:200;
+ const H=T+ih+B;
+ if(Math.abs(H-lastH)>1){lastH=H;fig.style.height=H+"px";}
+ const Y=a=>T+ih-a*ih;
+ let o="";
+ [[0,4,"--b1","1 · Assistant"],[4,8,"--b2","2 · Builder"],[8,11,"--b3","3 · Developer"]].forEach(([a,b,c,n])=>{
+  o+=`<rect x="${X(a)}" y="0" width="${X(b)-X(a)}" height="${H}" fill="var(${c})"/>`;
+  o+=`<text x="${X(a)+10}" y="26" style="font-weight:600">${narrow?n.split(" · ")[0]:n}</text>`;});
+ ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov"].forEach((t,k)=>{if(narrow&&k%2)return;
+  o+=`<text x="${X(k+.5)}" y="${H-12}" text-anchor="middle" style="fill:var(--mut)">${t}</text>`;});
+ let d="";
+ for(let k=0;k<=110;k++){const m=k/10;d+=(k?"L":"M")+X(m).toFixed(1)+" "+Y(alt(m)).toFixed(1);}
+ o+=`<path d="${d}L${X(11)} ${T+ih}L${X(0)} ${T+ih}Z" fill="var(--mag)" opacity=".10"/><path d="${d}" fill="none" stroke="var(--mag)" stroke-width="3.5" stroke-linecap="round"/>`;
+ items.forEach(({p,lab,x,cx,k})=>{
+  const y=Y(alt(p.m)),ly=top+k*LH+14;
+  o+=`<line x1="${x}" y1="${y-8}" x2="${x}" y2="${ly+5}" stroke="var(--mut)" stroke-width="1" stroke-dasharray="2 3"/>`;
+  if(Math.abs(cx-x)>2)o+=`<line x1="${x}" y1="${ly+5}" x2="${cx}" y2="${ly+5}" stroke="var(--mut)" stroke-width="1" stroke-dasharray="2 3"/>`;
+ });
+ items.forEach(({p,lab,x,cx,k})=>{
+  const y=Y(alt(p.m)),ly=top+k*LH+14;
+  o+=`<circle cx="${x}" cy="${y}" r="${narrow?4.5:6}" fill="var(--bg)" stroke="var(--mag)" stroke-width="${narrow?2.5:3}"/>`;
+  o+=`<text x="${cx}" y="${ly}" text-anchor="middle">${esc(lab)}</text>`;
+ });
  svg.innerHTML=o;
 }
 const ro=new ResizeObserver(draw);ro.observe(svg);
 
 function render(){lede();stats();chips();grid();stages();tools();}
-function mode(p){plain=p;$("m-pro").setAttribute("aria-pressed",!p);$("m-plain").setAttribute("aria-pressed",p);render();}
-$("m-pro").onclick=()=>mode(false);$("m-plain").onclick=()=>mode(true);
 $("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;filt=b.dataset.c;chips();grid();});
 $("grid").addEventListener("click",e=>{const b=e.target.closest(".card");if(b)open(+b.dataset.i);});
 $("x").onclick=close;$("ov").addEventListener("click",e=>{if(e.target.id==="ov")close();});
