@@ -1,4 +1,7 @@
 // Portfolio content. To add a project, copy one entry in PROJECTS and edit it.
+// Screenshots: add shots:["shots/name-1.png", ...] to a project to give its card a "See it" flip side.
+// Chart position "m" counts months from Jan 2026 (Jan 2027 = 12). Stats, dates and the chart update themselves.
+window.SITE={buildingSince:"2026-03"};
 // Fields: t title, c category (Work | Personal | Future), s stage (1-3), m month position on the chart
 // (0 = start of Jan 2026, 10.5 = mid Nov), tools, pitch, problem, built, impact, privacy,
 // sh: short name for the chart label (optional), wip: 1 shows "Write-up in progress".
@@ -78,9 +81,11 @@ window.PROJECTS=[
  impact:"Will give back hours of hand work on game day and keep roughly 90 people engaged live instead of waiting for results.",
  plain:"An app that runs our big Super Bowl party games and shows who's winning as the game happens."}
 ];
+// Stages: "from" = month the stage began, counted from Jan 2026 (0 = Jan 2026, 12 = Jan 2027).
+// The date range shown on the site is worked out from these, so a new stage only needs a "from".
 window.STAGES=[
-{n:"AI as assistant",w:"Jan – Apr 2026",d:"Using AI to run my day: prioritizing work across channels and automating the monitoring I used to do by hand.",pd:"I started by letting AI handle my busywork: sorting my day and watching spreadsheets for me."},
-{n:"AI as builder",w:"May – Aug 2026",d:"Shipping my first deployed app, built and released through GitHub into company Slack.",pd:"I built my first real app that other people at work used."},
-{n:"AI-driven development",w:"Sep 2026 – now",d:"Prototyping in Amazon Quick, building in Kiro with Firebase, following the AI-DLC methodology.",pd:"Now I design and build full apps with AI, at work and at home."}
+{n:"AI as assistant",from:0,d:"Using AI to run my day: prioritizing work across channels and automating the monitoring I used to do by hand.",pd:"I started by letting AI handle my busywork: sorting my day and watching spreadsheets for me."},
+{n:"AI as builder",from:4,d:"Shipping my first deployed app, built and released through GitHub into company Slack.",pd:"I built my first real app that other people at work used."},
+{n:"AI-driven development",from:8,d:"Prototyping in Amazon Quick, building in Kiro with Firebase, following the AI-DLC methodology.",pd:"Now I design and build full apps with AI, at work and at home."}
 ];
 window.TOOLKIT=[["Claude","Mar 2026","Daily planning, building, and challenging my thinking"],["Google Apps Script","Mar 2026","Automations and the Upkeepr app"],["GitHub","May 2026","Building and deploying the Slack app"],["Amazon Quick","Sep 2026","Prototypes and requirements"],["Kiro","Sep 2026","AI-assisted app development"],["Firebase","Sep 2026","App backend"],["AI-DLC methodology","Sep 2026","A structured AI development lifecycle"]];

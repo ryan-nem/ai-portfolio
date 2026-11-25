@@ -42,7 +42,6 @@ button:focus-visible,a:focus-visible,.card:focus-visible{outline:3px solid var(-
 svg text{font:500 13px Inter,sans-serif;fill:var(--ink);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
 .cap{font-size:13px;color:var(--mut);margin-top:-12px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));border-top:2px solid var(--ink)}
-.stats div{padding:14px 12px 0 0}
 .stats strong{display:block;font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,4vw,40px);line-height:1;color:var(--mag)}
 .stats span{font-size:14px;color:var(--mut)}
 .alt{background:var(--panel)}
@@ -52,12 +51,31 @@ svg text{font:500 13px Inter,sans-serif;fill:var(--ink);paint-order:stroke;strok
 .chip{font:500 15px Inter,sans-serif;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 16px;border-radius:999px;cursor:pointer;min-height:44px}
 .chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:16px}
-.card{display:flex;flex-direction:column;gap:10px;text-align:left;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:transform .15s,border-color .15s}
-.card:hover{transform:translateY(-2px);border-color:var(--mag)}
 .meta{display:flex;flex-wrap:wrap;gap:6px;font-size:13px}
 .tag{padding:3px 9px;border-radius:999px;background:var(--panel);color:var(--mut);white-space:nowrap}
 .tag.s1{background:var(--b1);color:var(--blue)}.tag.s2{background:var(--b2);color:var(--ink)}.tag.s3{background:var(--b3);color:var(--mag)}
+.stats div{padding:14px 12px 0;text-align:center}
+.card{position:relative;perspective:1400px;min-height:220px;cursor:pointer;border-radius:14px}
+.inner{position:relative;height:100%;transition:transform .7s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
+.card.has{min-height:320px}
+.card.flip .inner{transform:rotateY(180deg)}
+.face{backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.front{display:flex;flex-direction:column;gap:10px;padding:18px;height:100%;transition:border-color .15s}
+.card:hover .front{border-color:var(--mag)}
+.back{position:absolute;inset:0;transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px;background:var(--panel)}
 .card p{color:var(--mut);font-size:15px}
+.see{position:absolute;top:10px;right:10px;z-index:2;display:inline-flex;align-items:center;gap:6px;font:600 13px Inter,sans-serif;color:var(--mag);background:var(--b3);border:1px solid color-mix(in srgb,var(--mag) 30%,transparent);border-radius:999px;padding:0 12px;min-height:36px;cursor:pointer}
+.see svg{width:14px;height:14px}
+.phone{flex:1;min-height:0;aspect-ratio:9/19;max-width:100%;border:6px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--bg)}
+.reel{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.reel::-webkit-scrollbar{display:none}
+.reel img{flex:none;width:100%;height:100%;object-fit:cover;object-position:top;scroll-snap-align:start}
+.dots{display:flex;gap:6px}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--mag)}
+.shots{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:16px;padding-bottom:6px}
+.shots img{flex:none;height:min(420px,60vh);max-width:85%;border-radius:14px;border:1px solid var(--line);object-fit:contain;scroll-snap-align:start;background:var(--panel)}
+@media(prefers-reduced-motion:reduce){.inner{transition:none}}
 .tools{font-size:13px;color:var(--mut);margin-top:auto;padding-top:6px;border-top:1px solid var(--line)}
 .wip{font-size:13px;color:var(--mut);font-style:italic}
 .stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:0;border-top:2px solid var(--ink)}
@@ -101,20 +119,20 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     </div>
   </div>
   <div class="fig" id="fig" role="img" aria-label="Climb profile of Ryan's AI work from January 2026 to now, rising through three stages with projects as waypoints"><svg id="climb"></svg></div>
-  <p class="cap">Flight log, January 2026 to today. Waypoint positions within each stage are approximate.</p>
+  <p class="cap" id="cap"></p>
   <div class="stats" id="stats"></div>
 </div></header>
 
 <section class="band alt" id="projects"><div class="wrap">
   <div class="head">
-    <div><h2>Projects</h2><p>Tap any project for the problem, what I built and why it matters.</p></div>
+    <div><h2>Projects</h2><p>Tap any project for the problem, what I built and why it matters. Cards marked See it flip to show the app.</p></div>
     <div class="chips" id="chips"></div>
   </div>
   <div class="grid" id="grid"></div>
 </div></section>
 
 <section class="band" id="journey"><div class="wrap">
-  <div class="head"><div><h2>From using AI to building with it</h2><p>Three stages in under a year, each one changing what I could take on.</p></div></div>
+  <div class="head"><div><h2>From using AI to building with it</h2><p id="jsub"></p></div></div>
   <div class="stages" id="stages"></div>
 </div></section>
 
@@ -128,44 +146,84 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   </ul></div>
 </div></section>
 
-<footer class="band"><div class="wrap"><span>Ryan Nemethy · HR leader · Englewood, Colorado</span><span>Updated November 2026</span></div></footer>
+<footer class="band"><div class="wrap"><span>Ryan Nemethy · HR leader · Englewood, Colorado</span><span id="upd"></span></div></footer>
 
 <div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="dt"><div class="dlg"><button class="x" id="x" aria-label="Close">×</button><div id="dbody"></div></div></div>
 
 <script src="projects.js"></script>
 <script>
 {
-const P=window.PROJECTS,ST=window.STAGES,TL=window.TOOLKIT;
+const P=window.PROJECTS,ST=window.STAGES,TL=window.TOOLKIT,SITE=window.SITE||{};
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let filt="All";const SN=["","Assistant","Builder","Developer"];
 const $=id=>document.getElementById(id);
+const MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MOL=["January","February","March","April","May","June","July","August","September","October","November","December"];
+// time: months counted from Jan 2026
+const today=new Date();
+const NOW=(today.getFullYear()-2026)*12+today.getMonth()+(today.getDate()-1)/new Date(today.getFullYear(),today.getMonth()+1,0).getDate();
+const mLabel=(m,long)=>{const y=2026+Math.floor(m/12),k=((Math.floor(m)%12)+12)%12;return (long?MOL:MO)[k]+" "+y;};
+const since=(SITE.buildingSince||"2026-03").split("-").map(Number);
+const sinceM=(since[0]-2026)*12+since[1]-1;
+const monthsBuilding=Math.max(1,Math.round(NOW-sinceM));
+const span=m=>m<24?`${Math.round(m)} months`:`${(m/12).toFixed(m%12<1||m%12>11?0:1).replace(/\.0$/,"")} years`;
+const stageRange=k=>{const a=ST[k].from,b=ST[k+1]?ST[k+1].from-1:null;
+ const ya=2026+Math.floor(a/12),yb=b==null?null:2026+Math.floor(b/12);
+ if(b==null)return `${mLabel(a)} – now`;
+ return ya===yb?`${MO[a%12]} – ${MO[b%12]} ${ya}`:`${mLabel(a)} – ${mLabel(b)}`;};
+const phoneIco='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="1.5" width="8" height="13" rx="2"/><path d="M7 12.2h2"/></svg>';
 
-function lede(){$("lede").textContent="Ten years of HR leadership in aerospace manufacturing and aviation software. Since January 2026 I've moved from using AI to designing and shipping AI tools for HR and home.";}
-
+function lede(){$("lede").textContent=`Ten years of HR leadership in aerospace manufacturing and aviation software. Since ${MOL[since[1]-1]} ${since[0]} I've moved from using AI to designing and shipping AI tools for HR and home.`;}
 function stats(){
  const tools=new Set(TL.map(t=>t[0])).size;
  const built=P.filter(p=>p.c!=="Future").length;
- $("stats").innerHTML=[[built,"projects built or in progress"],[tools,"tools and methods"],[3,"stages of growth"],["11","months building"]]
+ const mb=monthsBuilding<24?[monthsBuilding,"months building"]:[(monthsBuilding/12).toFixed(1).replace(/\.0$/,""),"years building"];
+ $("stats").innerHTML=[[built,"projects built or in progress"],[tools,"tools and methods"],[ST.length,"stages of growth"],mb]
   .map(([n,l])=>`<div><strong>${esc(n)}</strong><span>${esc(l)}</span></div>`).join("");
+ $("jsub").textContent=`${ST.length} stages over ${span(NOW-sinceM)}, each one changing what I could take on.`;
+ $("cap").textContent=`Flight log, January 2026 to ${mLabel(NOW,true)}. Waypoint positions are approximate.`;
+ const lm=new Date(document.lastModified);
+ $("upd").textContent="Updated "+(isNaN(lm)?mLabel(NOW,true):MOL[lm.getMonth()]+" "+lm.getFullYear());
 }
-
 function chips(){
  $("chips").innerHTML=["All","Work","Personal","Future"].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c===filt}">${c}</button>`).join("");
 }
 function grid(){
- $("grid").innerHTML=P.map((p,i)=>({p,i})).filter(o=>filt==="All"||o.p.c===filt).map(({p,i})=>`
- <button class="card" data-i="${i}">
-  <div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">${SN[p.s]}</span>`:""}</div>
-  <h3>${esc(p.t)}</h3>
-  <p>${esc(p.pitch)}</p>
-  ${p.wip?`<span class="wip">Write-up in progress</span>`:""}
-  ${p.tools.length?`<div class="tools">${esc(p.tools.join(" · "))}</div>`:""}
- </button>`).join("");
+ $("grid").innerHTML=P.map((p,i)=>({p,i})).filter(o=>filt==="All"||o.p.c===filt).map(({p,i})=>{
+  const sh=Array.isArray(p.shots)&&p.shots.length?p.shots:null;
+  return `<article class="card${sh?" has":""}" data-i="${i}" tabindex="0" role="button" aria-label="${esc(p.t)}: open details">
+  ${sh?`<button class="see" data-flip="${i}" aria-label="Flip to see ${esc(p.t)} screenshots">${phoneIco}<span>See it</span></button>`:""}
+  <div class="inner">
+   <div class="face front">
+    <div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">${SN[p.s]}</span>`:""}</div>
+    <h3>${esc(p.t)}</h3>
+    <p>${esc(p.pitch)}</p>
+    ${p.tools.length?`<div class="tools">${esc(p.tools.join(" · "))}</div>`:""}
+   </div>
+   ${sh?`<div class="face back" aria-hidden="true"><div class="phone"><div class="reel">${sh.map((u,k)=>`<img src="${esc(u)}" alt="${esc(p.t)} screen ${k+1}" loading="lazy">`).join("")}</div></div>${sh.length>1?`<div class="dots">${sh.map((_,k)=>`<i class="${k?"":"on"}"></i>`).join("")}</div>`:""}</div>`:""}
+  </div></article>`;}).join("");
+ document.querySelectorAll(".reel").forEach(r=>r.addEventListener("scroll",()=>{const k=Math.round(r.scrollLeft/r.clientWidth);
+  r.closest(".back").querySelectorAll(".dots i").forEach((d,j)=>d.classList.toggle("on",j===k));},{passive:true}));
+ teach();
+}
+function flip(card){
+ const on=card.classList.toggle("flip");
+ const b=card.querySelector(".see span");if(b)b.textContent=on?"Back":"See it";
+ const back=card.querySelector(".back");if(back)back.setAttribute("aria-hidden",!on);
+}
+let taught=false,io=null;
+function teach(){
+ if(taught||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+ const c=document.querySelector(".card.has");if(!c||!("IntersectionObserver" in window))return;
+ if(io)io.disconnect();
+ io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)&&!taught){taught=true;io.disconnect();
+  setTimeout(()=>{flip(c);setTimeout(()=>{if(c.classList.contains("flip"))flip(c);},1600);},400);}},{threshold:.7});
+ io.observe(c);
 }
 function stages(){
  $("stages").innerHTML=ST.map((s,k)=>{
   const ps=P.filter(p=>p.s===k+1&&!p.wip).map(p=>`<li>${esc(p.t)}</li>`).join("");
-  return `<div class="stage"><span class="when">${esc(s.w)}</span><h3>${k+1}. ${esc(s.n)}</h3><p>${esc(s.d)}</p>${ps?`<ul>${ps}</ul>`:""}</div>`;}).join("");
+  return `<div class="stage"><span class="when">${esc(stageRange(k))}</span><h3>${k+1}. ${esc(s.n)}</h3><p>${esc(s.d)}</p>${ps?`<ul>${ps}</ul>`:""}</div>`;}).join("");
 }
 function tools(){
  $("tools").innerHTML=TL.map(t=>`<li><b>${esc(t[0])}</b><span>${esc(t[1])}</span><small>${esc(t[2])}</small></li>`).join("");
@@ -173,45 +231,57 @@ function tools(){
 function open(i){
  const p=P[i];
  const rows=[["The problem",p.problem],["What I built",p.built],["Privacy",p.privacy],["Impact",p.impact]].filter(r=>r[1]);
+ const sh=Array.isArray(p.shots)?p.shots:[];
  $("dbody").innerHTML=`<div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">${SN[p.s]}</span>`:""}</div>
   <h2 id="dt" style="margin-top:10px">${esc(p.t)}</h2><p style="color:var(--mut)">${esc(p.pitch)}</p>
+  ${sh.length?`<div class="shots">${sh.map((u,k)=>`<img src="${esc(u)}" alt="${esc(p.t)} screen ${k+1}" loading="lazy">`).join("")}</div>`:""}
   <div class="dl">${rows.length?rows.map(r=>`<div><h4>${esc(r[0])}</h4><p>${esc(r[1])}</p></div>`).join(""):`<p class="wip">Full write-up in progress.</p>`}</div>
   ${p.tools.length?`<p class="tools" style="margin-top:18px">Built with ${esc(p.tools.join(", "))}</p>`:""}`;
  $("ov").classList.add("on");$("x").focus();
 }
 function close(){$("ov").classList.remove("on");}
 
+// chart: spans Jan 2026 to the end of the current month, so it compresses as time passes
 const svg=$("climb"),fig=$("fig");
 const sm=x=>x<=0?0:x>=1?1:x*x*(3-2*x);
-const alt=m=>.12+.38*sm((m-3.6)/1.2)+.4*sm((m-7.6)/1.2);
 const mc=document.createElement("canvas").getContext("2d");
 const tw=t=>{mc.font="500 13px Inter, system-ui, sans-serif";return mc.measureText(t).width;};
 let lastH=0;
 function draw(){
+ const END=Math.max(Math.ceil(NOW+.01),...P.filter(p=>p.m!=null).map(p=>Math.ceil(p.m+.01)));
  const W=svg.clientWidth,narrow=W<560;
- const L=narrow?12:24,R=narrow?12:28,iw=W-L-R,X=m=>L+m/11*iw;
+ const L=narrow?12:24,R=narrow?12:28,iw=W-L-R,X=m=>L+m/END*iw;
+ const tr=1.2;
+ const lv=k=>.12+k*(.78/Math.max(1,ST.length-1));
+ const alt=m=>{let a=lv(0);for(let k=1;k<ST.length;k++)a+=(lv(k)-lv(k-1))*sm((m-ST[k].from+tr/2)/tr);return a;};
  const pts=P.filter(p=>p.m!=null).sort((a,b)=>a.m-b.m);
- // stack labels into lanes so none overlap
  const lanes=[],items=pts.map(p=>{
   const lab=p.sh||p.t,w=tw(lab)+12,x=X(p.m);
-  let cx=Math.min(Math.max(x,L+w/2),W-R-w/2);
+  const cx=Math.min(Math.max(x,L+w/2),W-R-w/2);
   let k=0;while(lanes[k]!=null&&lanes[k]>cx-w/2)k++;
   lanes[k]=cx+w/2;return {p,lab,x,cx,k};
  });
- const LH=22,top=44,zone=lanes.length*LH,T=top+zone+18,B=34,ih=narrow?170:200;
- const H=T+ih+B;
+ const LH=22,top=44,T=top+lanes.length*LH+18,B=34,ih=narrow?170:200,H=T+ih+B;
  if(Math.abs(H-lastH)>1){lastH=H;fig.style.height=H+"px";}
  const Y=a=>T+ih-a*ih;
  let o="";
- [[0,4,"--b1","1 · Assistant"],[4,8,"--b2","2 · Builder"],[8,11,"--b3","3 · Developer"]].forEach(([a,b,c,n])=>{
-  o+=`<rect x="${X(a)}" y="0" width="${X(b)-X(a)}" height="${H}" fill="var(${c})"/>`;
-  o+=`<text x="${X(a)+10}" y="26" style="font-weight:600">${narrow?n.split(" · ")[1]:n}</text>`;});
- ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov"].forEach((t,k)=>{if(narrow&&k%2)return;
-  o+=`<text x="${X(k+.5)}" y="${H-12}" text-anchor="middle" style="fill:var(--mut)">${t}</text>`;});
- let d="";
- for(let k=0;k<=110;k++){const m=k/10;d+=(k?"L":"M")+X(m).toFixed(1)+" "+Y(alt(m)).toFixed(1);}
- o+=`<path d="${d}L${X(11)} ${T+ih}L${X(0)} ${T+ih}Z" fill="var(--mag)" opacity=".10"/><path d="${d}" fill="none" stroke="var(--mag)" stroke-width="3.5" stroke-linecap="round"/>`;
- items.forEach(({p,lab,x,cx,k})=>{
+ ST.forEach((s,k)=>{const a=s.from,b=ST[k+1]?ST[k+1].from:END,bw=X(b)-X(a);
+  const full=`${k+1} · ${SN[k+1]||s.n}`,lab=tw(full)+16<bw?full:(tw(SN[k+1]||"")+12<bw?SN[k+1]:String(k+1));
+  o+=`<rect x="${X(a)}" y="0" width="${bw}" height="${H}" fill="var(--b${k%3+1})"/>`;
+  o+=`<text x="${X(a)+bw/2}" y="26" text-anchor="middle" style="font-weight:600">${esc(lab)}</text>`;});
+ // axis ticks: pick a step that keeps labels readable, show the year on January
+ const room=narrow?52:64,steps=[1,2,3,6,12,24];
+ const step=steps.find(st=>iw/(END/st)>=room)||24;
+ for(let m=0;m<END;m+=step){
+  const lab=m%12===0&&(END>12||m>0)?(step>=12?String(2026+m/12):`${MO[m%12]} ’${String(26+m/12).padStart(2,"0")}`):MO[m%12];
+  const x=step===1?X(m+.5):X(m);
+  o+=`<text x="${x}" y="${H-12}" text-anchor="${step===1?"middle":"start"}" style="fill:var(--mut)">${esc(lab)}</text>`;
+  if(step>1)o+=`<line x1="${X(m)}" x2="${X(m)}" y1="${T+ih}" y2="${T+ih+6}" stroke="var(--mut)"/>`;
+ }
+ let d="";const N=Math.max(110,END*10);
+ for(let k=0;k<=N;k++){const m=k/N*END;d+=(k?"L":"M")+X(m).toFixed(1)+" "+Y(alt(m)).toFixed(1);}
+ o+=`<path d="${d}L${X(END)} ${T+ih}L${X(0)} ${T+ih}Z" fill="var(--mag)" opacity=".10"/><path d="${d}" fill="none" stroke="var(--mag)" stroke-width="3.5" stroke-linecap="round"/>`;
+ items.forEach(({p,x,cx,k})=>{
   const y=Y(alt(p.m)),ly=top+k*LH+14;
   o+=`<line x1="${x}" y1="${y-8}" x2="${x}" y2="${ly+5}" stroke="var(--mut)" stroke-width="1" stroke-dasharray="2 3"/>`;
   if(Math.abs(cx-x)>2)o+=`<line x1="${x}" y1="${ly+5}" x2="${cx}" y2="${ly+5}" stroke="var(--mut)" stroke-width="1" stroke-dasharray="2 3"/>`;
@@ -227,7 +297,12 @@ const ro=new ResizeObserver(draw);ro.observe(svg);
 
 function render(){lede();stats();chips();grid();stages();tools();}
 $("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;filt=b.dataset.c;chips();grid();});
-$("grid").addEventListener("click",e=>{const b=e.target.closest(".card");if(b)open(+b.dataset.i);});
+$("grid").addEventListener("click",e=>{
+ const f=e.target.closest(".see");if(f){e.stopPropagation();flip(f.closest(".card"));return;}
+ const c=e.target.closest(".card");if(!c)return;
+ if(c.classList.contains("flip")){if(!e.target.closest(".reel"))flip(c);return;}
+ open(+c.dataset.i);});
+$("grid").addEventListener("keydown",e=>{const c=e.target.closest(".card");if(c&&e.target===c&&(e.key==="Enter"||e.key===" ")){e.preventDefault();open(+c.dataset.i);}});
 $("x").onclick=close;$("ov").addEventListener("click",e=>{if(e.target.id==="ov")close();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")close();});
 render();
