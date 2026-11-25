@@ -26,7 +26,7 @@ window.PROJECTS=[
  pitch:"A launched app for modeling, benchmarking and comparing executive pay decisions.",
  problem:"Executive pay decisions (out-of-sequence adjustments, promotions and new-hire offers) required pulling scenarios, market data and comparisons together by hand.",
  built:"An app launched in Amazon Quick, built with Kiro on Google Sheets data. It models pay scenarios, benchmarks against market data, prepares packages for the compensation committee, and compares up to three executives side by side. Used by the CPO, executive recruiting, total rewards and executive HRBPs, with role-based security controlling access.",
- impact:"The CPO estimates it will save 30 minutes a day.",
+ impact:"Estimated to save leadership 30 minutes a day.",
  plain:"A private work app that helps leaders make fair, well-informed decisions about executive pay, with sensitive numbers visible only to the right people."},
 {t:"HR AI Project Management Tracker",c:"Work",s:3,tools:[],pitch:"A tracker for running HR's AI projects.",wip:1,
  plain:"A shared tracker that keeps HR's AI projects organized."},
