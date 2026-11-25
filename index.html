@@ -67,6 +67,11 @@ svg text{font:500 13px Inter,sans-serif;fill:var(--ink);paint-order:stroke;strok
 .see{position:absolute;top:10px;right:10px;z-index:2;display:inline-flex;align-items:center;gap:6px;font:600 13px Inter,sans-serif;color:var(--mag);background:var(--b3);border:1px solid color-mix(in srgb,var(--mag) 30%,transparent);border-radius:999px;padding:0 12px;min-height:36px;cursor:pointer}
 .see svg{width:14px;height:14px}
 .phone{flex:1;min-height:0;aspect-ratio:9/19;max-width:100%;border:6px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--bg)}
+.browser{flex:none;margin:auto 0;width:100%;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.browser .bar{flex:none;height:18px;display:flex;align-items:center;gap:5px;padding:0 8px;background:#e9e7ee}
+.browser .bar i{width:7px;height:7px;border-radius:50%;background:#c9c5d0}
+.browser .reel{aspect-ratio:16/10;height:auto}
+.browser .reel img{object-fit:contain;object-position:center;background:#fff}
 .reel{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
 .reel::-webkit-scrollbar{display:none}
 .reel img{flex:none;width:100%;height:100%;object-fit:cover;object-position:top;scroll-snap-align:start}
@@ -172,6 +177,7 @@ const stageRange=k=>{const a=ST[k].from,b=ST[k+1]?ST[k+1].from-1:null;
  const ya=2026+Math.floor(a/12),yb=b==null?null:2026+Math.floor(b/12);
  if(b==null)return `${mLabel(a)} – now`;
  return ya===yb?`${MO[a%12]} – ${MO[b%12]} ${ya}`:`${mLabel(a)} – ${mLabel(b)}`;};
+const monIco='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="2.5" width="13" height="9" rx="1.5"/><path d="M6 14h4M8 11.5V14"/></svg>';
 const phoneIco='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="1.5" width="8" height="13" rx="2"/><path d="M7 12.2h2"/></svg>';
 
 function lede(){$("lede").textContent=`Ten years of HR leadership in aerospace manufacturing and aviation software. Since ${MOL[since[1]-1]} ${since[0]} I've moved from using AI to designing and shipping AI tools for HR and home.`;}
@@ -193,7 +199,7 @@ function grid(){
  $("grid").innerHTML=P.map((p,i)=>({p,i})).filter(o=>filt==="All"||o.p.c===filt).map(({p,i})=>{
   const sh=Array.isArray(p.shots)&&p.shots.length?p.shots:null;
   return `<article class="card${sh?" has":""}" data-i="${i}" tabindex="0" role="button" aria-label="${esc(p.t)}: open details">
-  ${sh?`<button class="see" data-flip="${i}" aria-label="Flip to see ${esc(p.t)} screenshots">${phoneIco}<span>See it</span></button>`:""}
+  ${sh?`<button class="see" data-flip="${i}" aria-label="Flip to see ${esc(p.t)} screenshots">${p.frame==="browser"?monIco:phoneIco}<span>See it</span></button>`:""}
   <div class="inner">
    <div class="face front">
     <div class="meta"><span class="tag">${esc(p.c)}</span>${p.s?`<span class="tag s${p.s}">${SN[p.s]}</span>`:""}</div>
@@ -201,7 +207,7 @@ function grid(){
     <p>${esc(p.pitch)}</p>
     ${p.tools.length?`<div class="tools">${esc(p.tools.join(" · "))}</div>`:""}
    </div>
-   ${sh?`<div class="face back" aria-hidden="true"><div class="phone"><div class="reel">${sh.map((u,k)=>`<img src="${esc(u)}" alt="${esc(p.t)} screen ${k+1}" loading="lazy">`).join("")}</div></div>${sh.length>1?`<div class="dots">${sh.map((_,k)=>`<i class="${k?"":"on"}"></i>`).join("")}</div>`:""}</div>`:""}
+   ${sh?`<div class="face back" aria-hidden="true">${p.frame==="browser"?`<div class="browser"><div class="bar"><i></i><i></i><i></i></div>`:`<div class="phone">`}<div class="reel">${sh.map((u,k)=>`<img src="${esc(u)}" alt="${esc(p.t)} screen ${k+1}" loading="lazy">`).join("")}</div></div>${sh.length>1?`<div class="dots">${sh.map((_,k)=>`<i class="${k?"":"on"}"></i>`).join("")}</div>`:""}</div>`:""}
   </div></article>`;}).join("");
  document.querySelectorAll(".reel").forEach(r=>r.addEventListener("scroll",()=>{const k=Math.round(r.scrollLeft/r.clientWidth);
   r.closest(".back").querySelectorAll(".dots i").forEach((d,j)=>d.classList.toggle("on",j===k));},{passive:true}));

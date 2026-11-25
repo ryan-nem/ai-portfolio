@@ -1,4 +1,5 @@
 // Portfolio content. To add a project, copy one entry in PROJECTS and edit it.
+// Screenshots: add frame:"browser" for desktop screenshots (default is a phone frame).
 // Screenshots: add shots:["shots/name-1.png", ...] to a project to give its card a "See it" flip side.
 // Chart position "m" counts months from Jan 2026 (Jan 2027 = 12). Stats, dates and the chart update themselves.
 window.SITE={buildingSince:"2026-03"};
@@ -25,19 +26,19 @@ window.PROJECTS=[
  privacy:"Privacy by design: it reports only aggregated, anonymized themes, and deliberately leaves out names and any detail that could identify someone.",
  impact:"Gave HR leaders an early read on sentiment, leading to more proactive and timely communication across the organization.",
  plain:"A tool that sums up the general mood in work chat as broad themes. It never names anyone or repeats what a person said."},
-{t:"Executive Compensation Tool",sh:"Exec Comp Tool",c:"Work",s:3,m:10.1,tools:["Amazon Quick","Kiro","Google Sheets"],
+{t:"Executive Compensation Tool",frame:"browser",shots:["shots/exec-comp-1.jpg","shots/exec-comp-2.jpg","shots/exec-comp-3.jpg"],sh:"Exec Comp Tool",c:"Work",s:3,m:10.1,tools:["Amazon Quick","Kiro","Google Sheets"],
  pitch:"A launched app for modeling, benchmarking and comparing executive pay decisions.",
  problem:"Executive pay decisions (out-of-sequence adjustments, promotions and new-hire offers) required pulling scenarios, market data and comparisons together by hand.",
  built:"An app launched in Amazon Quick, built with Kiro on Google Sheets data. It models pay scenarios, benchmarks against market data, prepares packages for the compensation committee, and compares up to three executives side by side. Used by the CPO, executive recruiting, total rewards and executive HRBPs, with role-based security controlling access.",
  impact:"Estimated to save leadership 30 minutes a day.",
  plain:"A private work app that helps leaders make fair, well-informed decisions about executive pay, with sensitive numbers visible only to the right people."},
-{t:"HR AI Project Management Tracker",sh:"HR AI Tracker",c:"Work",s:3,m:9.85,tools:["Amazon Quick"],
+{t:"HR AI Project Management Tracker",frame:"browser",shots:["shots/hr-ai-tracker-1.jpg","shots/hr-ai-tracker-2.jpg","shots/hr-ai-tracker-3.jpg"],sh:"HR AI Tracker",c:"Work",s:3,m:9.85,tools:["Amazon Quick"],
  pitch:"One view of every AI project across the HR team: owner, status and value.",
  problem:"AI projects were starting across HR with no single view of who owned what, where each stood, or how it tied to strategy.",
  built:"An Amazon Quick app, launched in October 2026, that tracks every HR AI project with its owner, status and value, and feeds the broader HR PMO.",
  impact:"Gives leadership visibility and lets them prioritize AI work against strategic initiatives, with every effort visible to the HR PMO.",
  plain:"A shared dashboard that shows every AI project in HR, who's running it and how it's going."},
-{t:"No-Meeting-Day AI Challenge",c:"Work",s:3,tools:["Program design"],
+{t:"No-Meeting-Day AI Challenge",frame:"browser",shots:["shots/ai-challenge-1.jpg","shots/ai-challenge-2.jpg"],c:"Work",s:3,tools:["Program design"],
  pitch:"A no-meeting day where HR teams use AI to solve one of three challenges set by HR leadership.",
  problem:"HR leaders had real problems worth solving with AI, but the team needed protected time and a reason to experiment together.",
  built:"I designed the program: a protected no-meeting day where teams tackle one of three challenges from the HR leadership team using AI. To pick winners, everyone gets $1,000 in play money to invest across the projects, a proxy vote with a fun twist. Planned for early December 2026.",
